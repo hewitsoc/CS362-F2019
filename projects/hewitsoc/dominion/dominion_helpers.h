@@ -11,5 +11,10 @@ int gainCard(int supplyPos, struct gameState *state, int toFlag, int player);
 int getCost(int cardNumber);
 int cardEffect(int card, int choice1, int choice2, int choice3,
                struct gameState *state, int handPos, int *bonus);
+int baronRefactor(int choice1, int currentPlayer, struct gameState *state);
+int minionRefactor(int choice1, int choice2, int currentPlayer, struct gameState *state, int handPos);
+int ambassadorRefactor(int choice1, int choice2, int currentPlayer, struct gameState *state, int handPos);
+int tributeRefactor(int currentPlayer, int nextPlayer, int tributeRevealedCards[], struct gameState *state);
+int mineRefactor(int choice1, int choice2, int currentPlayer, struct gameState *state, int handPos);
 
 #endif
