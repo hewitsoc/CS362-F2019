@@ -1,3 +1,10 @@
+/*********************************************
+* Name: CLayton Hewitson
+* Class: OSU 362, Software Engineering II, Fall 2019
+* Assignment: Random Testing Quiz
+* Due Date: 11/10/2019
+*********************************************/
+
 #include<stdio.h>
 #include<string.h>
 #include<stdlib.h>
@@ -5,14 +12,24 @@
 
 char inputChar()
 {
-    // TODO: rewrite this function
-    return ' ';
+    int n = (rand() % 94) + 32;
+    char c = (char) n;
+    
+    return c;
 }
 
 char *inputString()
 {
-    // TODO: rewrite this function
-    return "";
+    char str[6];
+    int i;
+    for(i = 0; i < 5; i++){
+       int n = (rand() % 16) + 101;
+       char c = (char) n; 
+       str[i] = c;
+    }
+    str[5] = '\0';
+    char *final = str;
+    return final;
 }
 
 void testme()
