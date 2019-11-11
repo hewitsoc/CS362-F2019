@@ -716,7 +716,9 @@ int baronRefactor(int choice1, int currentPlayer, struct gameState *state)
             }
 
             else {
-                p=0;//Next card
+                //commented out custom bug for code coverage purposes
+                //p=0;
+                p++;//Next card
             }
         }
     }
@@ -764,7 +766,9 @@ int minionRefactor(int choice1, int choice2, int currentPlayer, struct gameState
         //other players discard hand and redraw if hand size > 4
         for (i = 0; i < state->numPlayers; i++)
         {
-            if (i == currentPlayer)
+            //custom Bug: short circuits next block of code, nothing occurs
+            //if (i == currentPlayer)
+            if (i != currentPlayer)
             {
                 if ( state->handCount[i] > 4 )
                 {
@@ -794,24 +798,29 @@ int ambassadorRefactor(int choice1, int choice2, int currentPlayer, struct gameS
 
     if (choice2 > 2 || choice2 < 0)
     {
-        return 0;
+        //custom bug: return 0;
+        return -1;
     }
 
     if (choice1 == handPos)
     {
-        return 0;
+        //custom bug: return 0;
+        return -1;
     }
+
+
 
     for (i = 0; i < state->handCount[currentPlayer]; i++)
     {
-        if (i != handPos && i == state->hand[currentPlayer][choice1] && i != choice1)
+        if (i != handPos && i != choice1 && state->hand[currentPlayer][i] == state->hand[currentPlayer][choice1])
         {
             j++;
         }
     }
     if (j < choice2)
     {
-        return 0;
+        //custom bug: return 0;
+        return -1;
     }
 
     if (DEBUG)
@@ -821,7 +830,9 @@ int ambassadorRefactor(int choice1, int choice2, int currentPlayer, struct gameS
     state->supplyCount[state->hand[currentPlayer][choice1]] += choice2;
 
     //each other player gains a copy of revealed card
-    for (i = 0; i <= state->numPlayers; i++)
+    //custom bug, will cause segmentation fault as it searches out of bounds in array
+    //for (i = 0; i <= state->numPlayers; i++)
+    for (i = 0; i < state->numPlayers; i++)
     {
         if (i != currentPlayer)
         {
@@ -876,14 +887,14 @@ int tributeRefactor(int currentPlayer, int nextPlayer, int tributeRevealedCards[
                 state->discard[nextPlayer][i] = -1;
                 state->discardCount[nextPlayer]--;
             }
-
+            
             shuffle(nextPlayer,state);//Shuffle the deck
         }
         tributeRevealedCards[0] = state->deck[nextPlayer][state->deckCount[nextPlayer]-1];
-        state->deck[nextPlayer][state->deckCount[nextPlayer]--] = -1;
+        //custom bug: segmentation fault on array
+        //tributeRevealedCards[2] = state->deck[nextPlayer][state->deckCount[nextPlayer]-2];
+        tributeRevealedCards[1] = state->deck[nextPlayer][state->deckCount[nextPlayer]-2];
         state->deckCount[nextPlayer]--;
-        tributeRevealedCards[2] = state->deck[nextPlayer][state->deckCount[nextPlayer]-1];
-        state->deck[nextPlayer][state->deckCount[nextPlayer]--] = -1;
         state->deckCount[nextPlayer]--;
     }
 
@@ -927,7 +938,7 @@ int mineRefactor(int choice1, int choice2, int currentPlayer, struct gameState *
         return -1;
     }
 
-    if ( (getCost(state->hand[currentPlayer][choice1]) + 6) > getCost(choice2) )
+    if ( (getCost(state->hand[currentPlayer][choice1]) + 6) < getCost(choice2) )
     {
         return -1;
     }
