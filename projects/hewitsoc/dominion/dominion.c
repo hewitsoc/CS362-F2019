@@ -683,7 +683,8 @@ int getCost(int cardNumber)
 
 int baronRefactor(int choice1, int currentPlayer, struct gameState *state) 
 {
-    state->numActions++;//Increase actions by 1!
+    state->numBuys++;//Increase actions by 1!
+    //state->numActions++;//Increase actions by 1! commented out Custom Bug
     if (choice1 > 0) { //Boolean true or going to discard an estate
         int p = 0;//Iterator for hand!
         int card_not_discarded = 1;//Flag for discard set!
@@ -716,7 +717,8 @@ int baronRefactor(int choice1, int currentPlayer, struct gameState *state)
             }
 
             else {
-                p=0;//Next card
+                //p=0;//Next card
+                p++;
             }
         }
     }
@@ -742,8 +744,9 @@ int minionRefactor(int choice1, int choice2, int currentPlayer, struct gameState
     int j;
     //+1 action
     state->numActions++;
-
-	if (choice1)
+    discardCard(handPos, currentPlayer, state, 0);
+	
+    if (choice1)
     {
         state->coins = state->coins + 2;
     }
@@ -764,7 +767,8 @@ int minionRefactor(int choice1, int choice2, int currentPlayer, struct gameState
         //other players discard hand and redraw if hand size > 4
         for (i = 0; i < state->numPlayers; i++)
         {
-            if (i == currentPlayer)
+            //custom bug: if (i == currentPlayer)
+            if (i != currentPlayer)
             {
                 if ( state->handCount[i] > 4 )
                 {
@@ -882,14 +886,14 @@ int tributeRefactor(int currentPlayer, int nextPlayer, int tributeRevealedCards[
         tributeRevealedCards[0] = state->deck[nextPlayer][state->deckCount[nextPlayer]-1];
         state->deck[nextPlayer][state->deckCount[nextPlayer]--] = -1;
         state->deckCount[nextPlayer]--;
-        tributeRevealedCards[2] = state->deck[nextPlayer][state->deckCount[nextPlayer]-1];
+        tributeRevealedCards[1] = state->deck[nextPlayer][state->deckCount[nextPlayer]-1];
         state->deck[nextPlayer][state->deckCount[nextPlayer]--] = -1;
         state->deckCount[nextPlayer]--;
     }
 
     if (tributeRevealedCards[0] == tributeRevealedCards[1]) { //If we have a duplicate card, just drop one
         state->playedCards[state->playedCardCount] = tributeRevealedCards[1];
-        state->playedCardCount--;
+        state->playedCardCount++;
         tributeRevealedCards[1] = -1;
     }
 
