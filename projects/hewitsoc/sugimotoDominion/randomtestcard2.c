@@ -5,7 +5,7 @@
 ** Class        :   Software Engineering II - Fall 2019
 ** Assignment	:	4
 ** Due Date     :   11/17/2019
-** Description	:	A random test for the minionRefactor function implemented
+** Description	:	A random test for the minionCard function implemented
 **				:	in dominion.c
 *********************************************************************/
 
@@ -45,7 +45,8 @@ int main() {
 	// Game variables
 	int k[10] = { adventurer, baron, embargo, village, minion, mine, cutpurse, sea_hag, tribute, smithy };
 	int r;
-    int playerCount = 2, currentPlayer = 0, choice1 = 0, choice2=0, handPos=0;;
+    int playerCount = 2, currentPlayer = 0, choice1 = 0, choice2=0, handPos=0;
+    int m, n;
 	
     struct gameState state, test;
 
@@ -82,9 +83,9 @@ int main() {
                 state.handCount[p] = rand() % MAX_MINION_HAND + 1;                  //set player hand's
             }
 		    
-            choice1 = (rand() % 100) - 51;                                      //randomize choice 1 for minionRefactor
+            choice1 = (rand() % 100) - 51;                                      //randomize choice 1 for minionCard
 
-            choice2 = (rand() % 100) - 51;                                      //randomize choice 2 for minionRefactor
+            choice2 = (rand() % 100) - 51;                                      //randomize choice 2 for minionCard
                                                 
 		    if (state.handCount[currentPlayer] == 0) {                          //make sure currentPlayer has one card in hand
                 state.handCount[currentPlayer] = 1;
@@ -113,8 +114,8 @@ int main() {
             }
 
             
-            printf("\nBegin RandomTest of minionRefactor()\n");
-            minionRefactor(choice1, choice2, currentPlayer, &test, handPos);                       //run test
+            printf("\nBegin RandomTest of minionCard()\n");
+            minionCard(choice1, choice2, &test, handPos, currentPlayer, m, n);                     //run test
 
             //check modifiable values against expected values
             printf("\nNumber of Actions in State increased by 1\n");
@@ -127,10 +128,10 @@ int main() {
             custom_assert(test.handCount[currentPlayer] == 4, &testSuccess, "");
 
             if (choice1) {
-                printf("\nTest expected functionality of minionRefactor \nand player chooses +2 coins with choice of 1:\n"); 
+                printf("\nTest expected functionality of minionCard \nand player chooses +2 coins with choice of 1:\n"); 
                 custom_assert(originalCoins + 2 == test.coins, &testSuccess, "");
             }   else if (choice2) {
-                printf("\nTest expected functionality of minionRefactor if player chooses to redraw hand with choice 2\n");
+                printf("\nTest expected functionality of minionCard if player chooses to redraw hand with choice 2\n");
                 printf("Test current Player now has four cards in hand after redraw\n");
                 custom_assert(test.handCount[currentPlayer] == 4, &testSuccess, "");
                 printf("\nTest if other players' have more than four cards, they redraw\n");

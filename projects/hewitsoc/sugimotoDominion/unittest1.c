@@ -5,7 +5,7 @@
 ** Class        :   SOftware Engineering II - Fall 2019
 ** Assignment	:	3
 ** Due Date     :   11/10/2019
-** Description	:	A unit test for the baronRefactor function implemented
+** Description	:	A unit test for the baronCard function implemented
 **				:	in dominion.c
 *********************************************************************/
 
@@ -40,8 +40,9 @@ int main() {
 	int k[10] = {adventurer, minion, ambassador, gardens, mine, tribute, smithy, village, baron, great_hall};
 	struct gameState G;
 	handCount = 3;
+    int x, y;
 
-	printf("Begin Testing baronRefactor():\n");
+	printf("Begin Testing baronCard():\n");
 
 	memset(&G, 23, sizeof(struct gameState));   // clear the game state 
 	r = initializeGame(numPlayer, k, randSeed, &G); // initialize a new game    
@@ -71,29 +72,31 @@ int main() {
 		}
 	}
 
-	int choice = 0;
+	int choice1 = 0;
+    int choice2 = 1;
+    int handPos = 0;
 
 	printf("\nTest Custom bug: assert that numBuys does not increase by one per bug (Should fail, as numBuys not increased)\n");
 	int originalBuys = G.numBuys;
 
-	baronRefactor(choice, currentPlayer, &G);
+	baronCard(choice1, choice2, &G, handPos, currentPlayer, x, y);
 
 	int postBuys = G.numBuys;
 
 	custom_assert(originalBuys != postBuys,"");                   
 	
-	printf("\nTest that currentPlayer now has estate card in discard pile, having gained one from baronrefactor with a choice of 0\n");
+	printf("\nTest that currentPlayer now has estate card in discard pile, having gained one from baronCard with a choice of 0\n");
 	for (i = 0; i < G.discardCount[currentPlayer]; i++) {
 		custom_assert(G.discard[currentPlayer][i] == estate, "");
 	}
 
-	choice = 1;
+	choice1 = 1;
 
-	printf("\nTest expected functionality of baronRefactor if player has estate card,\nand chooses to discard for +4 coins with choice of 1:\n"); 
+	printf("\nTest expected functionality of baronCard if player has estate card,\nand chooses to discard for +4 coins with choice of 1:\n"); 
 
 	int originalCoins = G.coins;
 	
-	baronRefactor(choice, currentPlayer, &G);
+	baronCard(choice1, choice2, &G, handPos, currentPlayer, x, y);
 
 	printf("\nAssert Coins increased by four\n");
 
@@ -117,9 +120,9 @@ int main() {
 
 	printf("\nTest Error message displays if player chooses choice 1, with no estate cards in hand\n");
 
-	baronRefactor(choice, currentPlayer, &G);
+	baronCard(choice1, choice2, &G, handPos, currentPlayer, x, y);
 
-	printf("\nTest that currentPlayer now has estate card in discard pile, having gained one from baronrefactor with a choice of 1,\nbut no estate cards in hand (should have three estate cards now in discard)\n");
+	printf("\nTest that currentPlayer now has estate card in discard pile, having gained one from baronCard with a choice of 1,\nbut no estate cards in hand (should have three estate cards now in discard)\n");
 	for (i = 0; i < G.discardCount[currentPlayer]; i++) {
 		custom_assert(G.discard[currentPlayer][i] == estate, "");
 	}
@@ -128,17 +131,17 @@ int main() {
 
 	printf("\nWith supplycount of estate set to one, ensure isGameOver function runs when estate passed to player discard\n");
 
-	printf("\nAssert with baronRefactor choice of 1\n");
+	printf("\nAssert with baronCard choice of 1\n");
 
-	custom_assert(baronRefactor(choice, currentPlayer, &G) == 0,"");
+	custom_assert(baronCard(choice1, choice2, &G, handPos, currentPlayer, x, y),"");
 
-	choice = 0;
+	choice1 = 0;
 
 	G.supplyCount[estate] = 1;
 
-	printf("\nAssert with baronRefactor choice of 0\n");
+	printf("\nAssert with baronCard choice of 0\n");
 
-	custom_assert(baronRefactor(choice, currentPlayer, &G) == 0,"");
+	custom_assert(baronCard(choice1, choice2, &G, handPos, currentPlayer, x, y),"");
 
 	printf("\nTest completed!\n");
 

@@ -5,7 +5,7 @@
 ** Class        :   Software Engineering II - Fall 2019
 ** Assignment	:	4
 ** Due Date     :   11/17/2019
-** Description	:	A random test for the tributeRefactor function implemented
+** Description	:	A random test for the tributeCard function implemented
 **				:	in dominion.c
 *********************************************************************/
 
@@ -48,7 +48,10 @@ int main() {
 	int k[10] = { adventurer, baron, embargo, village, minion, mine, cutpurse, sea_hag, tribute, smithy };
 	int r;
     int playerCount = 2, currentPlayer = 0, nextPlayer = 1;
-    int tributeRevealedCards[2] = {-1, -1};
+    int choice1 = 0;
+    int choice2 = 0;
+    int handPos = 0;
+    int m, n;
 	
     struct gameState state, test;
 
@@ -123,8 +126,8 @@ int main() {
 
                 int oldhandCount = test.handCount[currentPlayer];
                 
-                printf("\nBegin RandomTest of tributeRefactor()\n");
-                tributeRefactor(currentPlayer, nextPlayer, tributeRevealedCards, &test);                       //run test
+                printf("\nBegin RandomTest of tributeCard()\n");
+                tributeCard(choice1, choice2, &test, handPos, currentPlayer, nextPlayer, x, y);                  //run test
 
                 //check modifiable values against expected values
 
@@ -147,11 +150,11 @@ int main() {
                 custom_assert(test.deckCount[nextPlayer] == olddeckCount + test.discardCount[nextPlayer], &testSuccess, "");
 
                 printf("\nAssert if two different action cards revealed, test->numActions increases + 4\n" );
-                printf("Assert will fail to due to bug in tributeRefactor in numActions reassignment.\n" );
+                printf("Assert will fail to due to bug in tributeCard in numActions reassignment.\n" );
                 custom_assert(oldActions + 4 == test.numActions, &testSuccess, "");
 
                 printf("\nAssert if one or two same action cards revealed, test->numActions increases + 2 only\n" );
-                printf("Assert will fail to due to bug in tributeRefactor in numActions reassignment.\n" );
+                printf("Assert will fail to due to bug in tributeCard in numActions reassignment.\n" );
                 custom_assert(oldActions + 2 == test.numActions, &testSuccess, "");
 
                 printf("\nAssert if two different treasure cards revealed, test->coins increases + 4\n" );

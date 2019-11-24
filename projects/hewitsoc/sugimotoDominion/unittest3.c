@@ -5,7 +5,7 @@
 ** Class        :   SOftware Engineering II - Fall 2019
 ** Assignment	:	3
 ** Due Date     :   11/10/2019
-** Description	:	A unit test for the ambassadorRefactor function implemented
+** Description	:	A unit test for the ambassadorCard function implemented
 **				:	in dominion.c
 *********************************************************************/
 
@@ -40,8 +40,9 @@ int main() {
 	int k[10] = {adventurer, minion, ambassador, gardens, mine, tribute, smithy, village, baron, great_hall};
 	struct gameState G;
 	handCount = 5;
+    int x, y;
 
-	printf("Begin Testing ambassadorRefactor():\n");
+	printf("Begin Testing ambassadorCard():\n");
 
 	memset(&G, 23, sizeof(struct gameState));   // clear the game state 
 	r = initializeGame(numPlayer, k, randSeed, &G); // initialize a new game    
@@ -75,12 +76,12 @@ int main() {
     int choice2 = 3;
     int handPos = 1;
 
-    printf("\nCustom Bug: ambassadorRefactor returns 0 in impossible conditionals (should return -1).\nAlso tests if player tries to choose more than 2 or less than 0\n");
+    printf("\nCustom Bug: ambassadorCard returns 0 in impossible conditionals (should return -1).\nAlso tests if player tries to choose more than 2 or less than 0\n");
     printf("cards to return supply, or if they attempt to choose ambassador card as card to trash (must be from hand)\n");
     printf("NOTE: Custom Bug was interfering with code coverage in strange ways, had to comment out\n");
     printf("Attempting to copy more than two cards. Assert should succeed.\n");
 
-    int returnValue = ambassadorRefactor(choice1, choice2, currentPlayer, &G, handPos);
+    int returnValue = ambassadorCard(choice1, choice2, &G, handPos, currentPlayer, x, y);
 
     custom_assert(returnValue == -1,"");
 
@@ -88,7 +89,7 @@ int main() {
 
     choice2 = -1;
 
-    returnValue = ambassadorRefactor(choice1, choice2, currentPlayer, &G, handPos);
+    returnValue = ambassadorCard(choice1, choice2, &G, handPos, currentPlayer, x, y);
 
     custom_assert(returnValue == -1,"");
 
@@ -96,7 +97,7 @@ int main() {
 
     choice2 = 2; 
 
-    returnValue = ambassadorRefactor(choice1, choice2, currentPlayer, &G, handPos);
+    returnValue = ambassadorCard(choice1, choice2, &G, handPos, currentPlayer, x, y);
 
     custom_assert(returnValue == -1,"");
 
@@ -120,7 +121,7 @@ int main() {
 
     choice2 = 1; 
 
-    returnValue = ambassadorRefactor(choice1, choice2, currentPlayer, &G, handPos);
+    returnValue = ambassadorCard(choice1, choice2, &G, handPos, currentPlayer, x, y);
 
     custom_assert(returnValue == -1,"");
 
@@ -146,7 +147,7 @@ int main() {
 
     choice2 = 2; 
 
-    returnValue = ambassadorRefactor(choice1, choice2, currentPlayer, &G, handPos);
+    returnValue = ambassadorCard(choice1, choice2, &G, handPos, currentPlayer, x, y);
 
     custom_assert(returnValue == -1,"");
 
@@ -182,7 +183,7 @@ int main() {
 
     choice2 = 2; 
 
-    returnValue = ambassadorRefactor(choice1, choice2, currentPlayer, &G, handPos);
+    returnValue = ambassadorCard(choice1, choice2, &G, handPos, currentPlayer, x, y);
 
     printf("\nPlayer wishes to trash card not in hand or opts not to trash any cards, assert cannot.\n");
     custom_assert(returnValue == -1,"");
@@ -222,7 +223,7 @@ int main() {
 
     int supplyAmbassador = G.supplyCount[ambassador];
 
-    ambassadorRefactor(choice1, choice2, currentPlayer, &G, handPos);
+    ambassadorCard(choice1, choice2, &G, handPos, currentPlayer, x, y);
 
     printf("\nTest if other player gains a copy of ambassador card, by iterating. All should assert true, for added ambassador cards\n");
 

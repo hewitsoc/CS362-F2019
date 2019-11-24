@@ -5,7 +5,7 @@
 ** Class        :   SOftware Engineering II - Fall 2019
 ** Assignment	:	3
 ** Due Date     :   11/10/2019
-** Description	:	A unit test for the tributeRefactor function implemented
+** Description	:	A unit test for the tributeCard function implemented
 **				:	in dominion.c
 *********************************************************************/
 
@@ -41,8 +41,13 @@ int main() {
 	int k[10] = {adventurer, minion, ambassador, gardens, mine, tribute, smithy, village, baron, great_hall};
 	struct gameState G;
 	handCount = 5;
+    int x, y;
 
-	printf("Begin Testing tributeRefactor():\n");
+    int choice1 = 0;
+    int choice2 = 0;
+    int handPos = 0;
+
+	printf("Begin Testing tributeCard():\n");
 
 	memset(&G, 23, sizeof(struct gameState));   // clear the game state 
 	r = initializeGame(numPlayer, k, randSeed, &G); // initialize a new game    
@@ -73,10 +78,8 @@ int main() {
     G.deckCount[nextPlayer] = 0;
     G.discardCount[nextPlayer] = 0;
 
-    int tributeRevealedCards[2] = {-1, -1}; 
-
     printf("\nAssert that nextPlayer has no cards to reveal when tribute is played\n" );
-    tributeRefactor(currentPlayer, nextPlayer, tributeRevealedCards, &G);
+    tributeCard(choice1, choice2, &G, handPos, currentPlayer, nextPlayer, x, y);
     custom_assert(G.deckCount[nextPlayer] == 0,"");
     custom_assert(G.discardCount[nextPlayer] == 0,"");
 
@@ -94,7 +97,7 @@ int main() {
     printf("\nSince card is estate, expected action of +2 Cards to currentPlayer.\n" );
 
     int oldCardCount = G.handCount[currentPlayer];
-    tributeRefactor(currentPlayer, nextPlayer, tributeRevealedCards, &G);
+    tributeCard(choice1, choice2, &G, handPos, currentPlayer, nextPlayer, x, y);
     custom_assert(oldCardCount + 2 == G.handCount[currentPlayer],"");
 
     int discardCount = 1;
@@ -111,7 +114,7 @@ int main() {
     printf("\nSince card is estate, expected action of +2 Cards to currentPlayer.\n" );
 
     oldCardCount = G.handCount[currentPlayer];
-    tributeRefactor(currentPlayer, nextPlayer, tributeRevealedCards, &G);
+    tributeCard(choice1, choice2, &G, handPos, currentPlayer, nextPlayer, x, y);
     custom_assert(oldCardCount + 2 == G.handCount[currentPlayer],"");
 
     memset(&G, 23, sizeof(struct gameState));   // clear the game state 
@@ -134,11 +137,11 @@ int main() {
     printf("\nTests two different functionalities, one that if nextPlayer has two cards in discard and none in deck.\n" );
     printf("the cards are shuffled into the nextPlayer's deck.\n" );
     printf("And two, that correct amount of +4 cards is returned for two different victory cards.\n" );
-    printf("However, both these asserts will return false due to a bug in an internal for loop of tributeRefactor.\n");
+    printf("However, both these asserts will return false due to a bug in an internal for loop of tributeCard.\n");
 
     oldCardCount = G.handCount[currentPlayer];
 
-    tributeRefactor(currentPlayer, nextPlayer, tributeRevealedCards, &G);
+    tributeCard(choice1, choice2, &G, handPos, currentPlayer, nextPlayer, x, y);
     custom_assert(deckCount - 2 == G.deckCount[nextPlayer],"");
     custom_assert(oldCardCount + 4 == G.handCount[currentPlayer],"");
 
@@ -165,13 +168,13 @@ int main() {
 
     oldCardCount = G.handCount[currentPlayer];
 
-    tributeRefactor(currentPlayer, nextPlayer, tributeRevealedCards, &G);
+    tributeCard(choice1, choice2, &G, handPos, currentPlayer, nextPlayer, x, y);
     custom_assert(deckCount - 2 == G.deckCount[nextPlayer],"");
     custom_assert(oldCardCount + 4 == G.handCount[currentPlayer],"");
 
     printf("\nFirst assert is that nextPlayer's deck has been decremented properly for both cards\n");
     printf("Second assert is for two different action cards, should be +4 actions\n" );
-    printf("Note: Second assert will fail to due to bug in tributeRefactor in numActions reassignment.\n" );
+    printf("Note: Second assert will fail to due to bug in tributeCard in numActions reassignment.\n" );
 
     discardCount = 0;
     deckCount = 2;
@@ -187,7 +190,7 @@ int main() {
 
     int oldActionCount = G.numActions;
 
-    tributeRefactor(currentPlayer, nextPlayer, tributeRevealedCards, &G);
+    tributeCard(choice1, choice2, &G, handPos, currentPlayer, nextPlayer, x, y);
     custom_assert(deckCount - 2 == G.deckCount[nextPlayer],"");
     custom_assert(oldActionCount + 4 == G.numActions,"");
 
@@ -208,7 +211,7 @@ int main() {
 
     int oldCoinCount = G.coins;
 
-    tributeRefactor(currentPlayer, nextPlayer, tributeRevealedCards, &G);
+    tributeCard(choice1, choice2, &G, handPos, currentPlayer, nextPlayer, x, y);
     custom_assert(deckCount - 2 == G.deckCount[nextPlayer],"");
     custom_assert(oldCoinCount + 4 == G.coins,"");
 
@@ -220,7 +223,7 @@ int main() {
 
     printf("\nFirst assert is that nextPlayer's deck has been decremented properly for both cards\n");
     printf("Second and third assert is for one action card, one victory card, should be +2 actions and plus 2 cards(currentPlayer)\n" );
-    printf("Note: Second assert will fail to due to bug in tributeRefactor in numActions reassignment.\n" );
+    printf("Note: Second assert will fail to due to bug in tributeCard in numActions reassignment.\n" );
 
     discardCount = 0;
     deckCount = 2;
@@ -237,7 +240,7 @@ int main() {
     oldCardCount = G.handCount[currentPlayer];
     oldActionCount = G.numActions;
 
-    tributeRefactor(currentPlayer, nextPlayer, tributeRevealedCards, &G);
+    tributeCard(choice1, choice2, &G, handPos, currentPlayer, nextPlayer, x, y);
     custom_assert(deckCount - 2 == G.deckCount[nextPlayer],"");
     custom_assert(oldActionCount + 2 == G.numActions,"");
     custom_assert(oldCardCount + 2 == G.handCount[currentPlayer],"");
@@ -250,7 +253,7 @@ int main() {
 
     printf("\nFirst assert is that nextPlayer's deck has been decremented properly for both cards\n");
     printf("Second and third assert is for one action card, one treausure card, should be +2 actions and plus 2 coins\n" );
-    printf("Note: Second assert will fail to due to bug in tributeRefactor in numActions reassignment.\n" ); 
+    printf("Note: Second assert will fail to due to bug in tributeCard in numActions reassignment.\n" ); 
 
     discardCount = 0;
     deckCount = 2;
@@ -267,7 +270,7 @@ int main() {
     oldActionCount = G.numActions;
     oldCoinCount = G.coins;
 
-    tributeRefactor(currentPlayer, nextPlayer, tributeRevealedCards, &G);
+    tributeCard(choice1, choice2, &G, handPos, currentPlayer, nextPlayer, x, y);
     custom_assert(deckCount - 2 == G.deckCount[nextPlayer],"");
     custom_assert(oldActionCount + 2 == G.numActions,"");
     custom_assert(oldCoinCount + 2 == G.coins,"");
@@ -296,7 +299,7 @@ int main() {
     oldCardCount = G.handCount[currentPlayer];
     oldCoinCount = G.coins;
 
-    tributeRefactor(currentPlayer, nextPlayer, tributeRevealedCards, &G);
+    tributeCard(choice1, choice2, &G, handPos, currentPlayer, nextPlayer, x, y);
     custom_assert(deckCount - 2 == G.deckCount[nextPlayer],"");
     custom_assert(oldCardCount + 2 == G.handCount[currentPlayer],"");
     custom_assert(oldCoinCount + 2 == G.coins,"");
@@ -325,7 +328,7 @@ int main() {
     oldCoinCount = G.coins;
     int oldPlayedCount = G.playedCardCount;
 
-    tributeRefactor(currentPlayer, nextPlayer, tributeRevealedCards, &G);
+    tributeCard(choice1, choice2, &G, handPos, currentPlayer, nextPlayer, x, y);
     custom_assert(deckCount - 2 == G.deckCount[nextPlayer],"");
     custom_assert(oldCoinCount + 2 == G.coins,"");
     custom_assert(oldPlayedCount + 1 == G.playedCardCount,"");
