@@ -73,14 +73,14 @@ int main() {
 
 	int choice = 0;
 
-	printf("\nTest Custom bug: assert that numBuys does not increase by one per bug (Should fail, as numBuys not increased)\n");
+	printf("\nAssert that numBuys increases by one\n");
 	int originalBuys = G.numBuys;
 
 	playBaron(choice, currentPlayer, &G);
 
 	int postBuys = G.numBuys;
 
-	custom_assert(originalBuys != postBuys,"");                   
+	custom_assert(originalBuys + 1 == postBuys,"");                   
 	
 	printf("\nTest that currentPlayer now has estate card in discard pile, having gained one from playBaron with a choice of 0\n");
 	for (i = 0; i < G.discardCount[currentPlayer]; i++) {

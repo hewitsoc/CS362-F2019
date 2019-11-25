@@ -226,8 +226,8 @@ int main() {
     }
 
 	printf("Assert player now has no silvers, card trashed\n");
-	printf("Custom Bug: card trashed is always from index zero, so assert will fail or succeed randomly\n");
-	printf("Here silver card still exixts\n");
+	printf("Custom Bug: card trashed is always from index one or beyond, so assert will fail or succeed randomly\n");
+	printf("Here silver card still exists\n");
 	for (i = 0; i < G.handCount[currentPlayer]; i++) {
         custom_assert(G.hand[currentPlayer][i] == silver,"");
     }
