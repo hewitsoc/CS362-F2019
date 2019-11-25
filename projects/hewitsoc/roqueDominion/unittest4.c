@@ -5,7 +5,7 @@
 ** Class        :   SOftware Engineering II - Fall 2019
 ** Assignment	:	3
 ** Due Date     :   11/10/2019
-** Description	:	A unit test for the mineCard function implemented
+** Description	:	A unit test for the playMine function implemented
 **				:	in dominion.c
 *********************************************************************/
 
@@ -40,9 +40,8 @@ int main() {
 	int k[10] = {adventurer, minion, ambassador, gardens, mine, tribute, smithy, village, baron, great_hall};
 	struct gameState G;
 	handCount = 4;
-    int x, y;
 
-	printf("Begin Testing mineCard():\n");
+	printf("Begin Testing playMine():\n");
 
 	memset(&G, 23, sizeof(struct gameState));   // clear the game state 
 	r = initializeGame(numPlayer, k, randSeed, &G); // initialize a new game    
@@ -99,7 +98,7 @@ int main() {
     int choice2 = 0;
     int handPos = 0;
 
-    int returnedValue = mineCard(choice1, choice2, &G, handPos, currentPlayer, x, y);
+    int returnedValue = playMine(choice1, choice2, currentPlayer, &G, handPos);
 
     custom_assert(returnedValue == -1,"");
 
@@ -110,13 +109,13 @@ int main() {
     choice1 = 3;
     choice2 = -1;
 
-    returnedValue = mineCard(choice1, choice2, &G, handPos, currentPlayer, x, y);
+    returnedValue = playMine(choice1, choice2, currentPlayer, &G, handPos);
 
     custom_assert(returnedValue == -1,"");
 
     choice2 = 27;
 
-    returnedValue = mineCard(choice1, choice2, &G, handPos, currentPlayer, x, y);
+    returnedValue = playMine(choice1, choice2, currentPlayer, &G, handPos);
 
     custom_assert(returnedValue == -1,"");
 
@@ -128,7 +127,7 @@ int main() {
     choice1 = 1;
     choice2 = 6;
 
-    returnedValue = mineCard(choice1, choice2, &G, handPos, currentPlayer, x, y);
+    returnedValue = playMine(choice1, choice2, currentPlayer, &G, handPos);
 	
     custom_assert(returnedValue == -1,"");
 
@@ -164,7 +163,7 @@ int main() {
 	choice1 = 1;
     choice2 = 5;
 
-    mineCard(choice1, choice2, &G, handPos, currentPlayer, x, y);
+    playMine(choice1, choice2, currentPlayer, &G, handPos);
 
 	printf("Assert player now has two silvers\n");
 	for (i = 0; i < G.handCount[currentPlayer]; i++) {
@@ -214,7 +213,7 @@ int main() {
 	choice1 = 4;
     choice2 = 6;;
 
-    mineCard(choice1, choice2, &G, handPos, currentPlayer, x, y);
+    playMine(choice1, choice2, currentPlayer, &G, handPos);
 
 	printf("Assert player now has two golds\n");
 	for (i = 0; i < G.handCount[currentPlayer]; i++) {

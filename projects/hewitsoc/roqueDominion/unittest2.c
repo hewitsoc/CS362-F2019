@@ -5,7 +5,7 @@
 ** Class        :   SOftware Engineering II - Fall 2019
 ** Assignment	:	3
 ** Due Date     :   11/10/2019
-** Description	:	A unit test for the minionCard function implemented
+** Description	:	A unit test for the playMinion function implemented
 **				:	in dominion.c
 *********************************************************************/
 
@@ -40,9 +40,8 @@ int main() {
 	int k[10] = {adventurer, minion, ambassador, gardens, mine, tribute, smithy, village, baron, great_hall};
 	struct gameState G;
 	handCount = 5;
-    int x, y;
 
-	printf("Begin Testing minionCard():\n");
+	printf("Begin Testing playMinion():\n");
 
 	memset(&G, 23, sizeof(struct gameState));   // clear the game state 
 	r = initializeGame(numPlayer, k, randSeed, &G); // initialize a new game    
@@ -79,10 +78,10 @@ int main() {
     int choice2 = 0;
     int handPos = 1;                   
 	
-	printf("\nTest that currentPlayer has chosen choice 1 with minionCard, thus gaining + 2 to coin \n");
+	printf("\nTest that currentPlayer has chosen choice 1 with playMinion, thus gaining + 2 to coin \n");
 	int originalCoins = G.coins;
 	
-	minionCard(choice1, choice2, &G, handPos, currentPlayer, x, y);
+	playMinion(choice1, choice2, currentPlayer, &G, handPos);
 
 	printf("\nAssert Coins increased by two\n");
 
@@ -94,7 +93,7 @@ int main() {
 
     custom_assert(handCount - 1 == G.handCount[currentPlayer],"");
 
-    printf("\nTest that currentPlayer has chosen choice 2 with minionCard, discarding hand, and gaining + 4 cards \n");
+    printf("\nTest that currentPlayer has chosen choice 2 with playMinion, discarding hand, and gaining + 4 cards \n");
 
     choice1 = 0;
     choice2 = 1;
@@ -105,7 +104,7 @@ int main() {
         custom_assert(handCount == G.handCount[p], "");
     }
 
-    minionCard(choice1, choice2, &G, handPos, currentPlayer, x, y);
+    playMinion(choice1, choice2, currentPlayer, &G, handPos);
 
     printf("\nCurrent player now has only four cards in hand, do to discard and redraw from choice 2\n");
 
@@ -139,7 +138,7 @@ int main() {
 		}
 	}
 
-    minionCard(choice1, choice2, &G, handPos, currentPlayer, x, y);
+    playMinion(choice1, choice2, currentPlayer, &G, handPos);
 
     printf("\nCurrent player now has only four cards in hand, do to discard and redraw from choice 2\n");
 
