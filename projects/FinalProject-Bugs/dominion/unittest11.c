@@ -41,7 +41,7 @@ int main() {
 	struct gameState G;
 	handCount = 5;
 
-	printf("Begin Testing cardEffect, tribute case, bug 9():\n");
+	printf("Begin Testing cardEffect, minion case, bug 11():\n");
 
 	memset(&G, 23, sizeof(struct gameState));   // clear the game state 
 	r = initializeGame(numPlayer, k, randSeed, &G); // initialize a new game    

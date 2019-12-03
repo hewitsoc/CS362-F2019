@@ -40,7 +40,7 @@ int main() {
 	struct gameState G;
 	handCount = 5;
 
-	printf("Begin Testing ambassadorRefactor():\n");
+	printf("Begin Testing cardEffect, ambassador case, bug10():\n");
 
 	memset(&G, 23, sizeof(struct gameState));   // clear the game state 
 	r = initializeGame(numPlayer, k, randSeed, &G); // initialize a new game    
@@ -104,20 +104,6 @@ int main() {
     printf("\nAssert number of mines in currentPlayer’s hand\n");
     for (i = 0; i < G.handCount[currentPlayer]; i++) {
 	    custom_assert(G.hand[currentPlayer][i] == mine);
-    }
-
-    printf("\nAssert that in the event of the CurrentPlayer choosing to discard played ambassador card, function does not allows this to take place. \n");
-    printf("Assert number of ambassadors in currentPlayer’s hand\n");
-    for (i = 0; i < G.handCount[currentPlayer]; i++) {
-	    custom_assert(G.hand[currentPlayer][i] == ambassador);
-    }
-
-    choice1 = 0;
-    cardEffect(card, choice1, choice2, choice3, &G, handPos, &coin_bonus);
-
-    printf("Assert number of ambassadors in currentPlayer’s hand\n");
-    for (i = 0; i < G.handCount[currentPlayer]; i++) {
-	    custom_assert(G.hand[currentPlayer][i] == ambassador);
     }
     
 	printf("\nTest completed!\n");
