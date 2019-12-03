@@ -5,7 +5,7 @@
 ** Class        :   Software Engineering II - Fall 2019
 ** Assignment	:	Final Project
 ** Due Date     :   12/03/2019
-** Description	:	A unit test for bug #11 in cardEffect function, minion case implemented
+** Description	:	A unit test for bug #9 in cardEffect function, tribute case implemented
 **				:	in dominion.c
 *********************************************************************/
 
@@ -35,13 +35,12 @@ int main() {
 	int randSeed = 71;
 	int numPlayer = 2;
 	int p, r, handCount;
-	int currentPlayer = 0;
     int nextPlayer = 1;
 	int k[10] = {adventurer, minion, ambassador, gardens, mine, tribute, smithy, village, baron, great_hall};
 	struct gameState G;
 	handCount = 5;
 
-	printf("Begin Testing cardEffect, minion case, bug 11():\n");
+	printf("Begin Testing cardEffect, tribute case, bug 9():\n");
 
 	memset(&G, 23, sizeof(struct gameState));   // clear the game state 
 	r = initializeGame(numPlayer, k, randSeed, &G); // initialize a new game    
@@ -71,37 +70,22 @@ int main() {
     int choice2 = 0;
     int choice3 = 0;
     int handPos = 0;
-    int card = 17;
+    int card = 19;
 
 
     for (p = 0; p < numPlayer; p++) {
-		for (i = 0; i < handCount; i++) {
-			memcpy(G.hand[p], minions, sizeof(int) * (handCount));
+		for (i = 0; i < deckCount; i++) {
+			memcpy(G.deck[p], minions, sizeof(int) * (deckCount));
 		}
 	}
 
-    int oldCoinCount = G.coins;
+    int oldActionCount = G.numActions;
 
-	printf("Assert that in the event of the CurrentPlayer choosing no values for choice1 or choice2, the player’s minion card remains in hand, \n");
-	printf("the function exits with a -1 value, and that the state of coins and the cards in currentPlayer’s hand have not been redrawn. \n");
-	printf("Assert number of minions in currentPlayer’s hand\n");
-	for (i = 0; i < G.handCount[currentPlayer]; i++) {
-		custom_assert(G.hand[currentPlayer][i] == minion);
-	}
+    printf("\nAssert if nextPlayer has two identical action cards in deck, only one +2 numActions bonus is given\n" );
+    
+    cardEffect(card, choice1, choice2, choice3, &G, handPos, &coin_bonus);
 
-	int q = cardEffect(card, choice1, choice2, choice3, &G, handPos, &coin_bonus);
-
-	printf("\nAssert number of minions in currentPlayer’s hand post function call\n");
-
-	for (i = 0; i < G.handCount[currentPlayer]; i++) {
-		custom_assert(G.hand[currentPlayer][i] == minion);
-	}
-
-	printf("\nAssert that state of coins has increased. \n");
-    custom_assert(oldCoinCount == G.coins);
-
-	printf("\nAssert that function exists with value of -1. \n");
-	custom_assert (q == -1); 
+    custom_assert(oldActionCount + 2 == G.numActions);
 
 	printf("\nTest completed!\n");
 

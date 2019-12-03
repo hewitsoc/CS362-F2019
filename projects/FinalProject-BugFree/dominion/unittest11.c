@@ -97,7 +97,7 @@ int main() {
 		custom_assert(G.hand[currentPlayer][i] == minion);
 	}
 
-	printf("\nAssert that state of coins has increased. \n");
+	printf("\nAssert that state of coins has not increased. \n");
     custom_assert(oldCoinCount == G.coins);
 
 	printf("\nAssert that function exists with value of -1. \n");
